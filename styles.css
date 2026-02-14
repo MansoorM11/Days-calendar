@@ -65,10 +65,31 @@ nav {
   cursor: pointer;
 }
 
-#calendar-body {
-  border: solid;
+#calendar-header {
   width: 100%;
   height: 3rem;
   display: grid;
-  grid-template-columns: repeat(7 1fr);
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekdays {
+  border: solid 0.1rem var(--dark-blue);
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: var(--dark-blue);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--alice-blue);
+  color: var(--dark-blue);
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }

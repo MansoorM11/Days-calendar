@@ -6,6 +6,20 @@
 import { getGreeting } from "./common.mjs";
 import daysData from "./days.json" with { type: "json" };
 
+function createCalendarHeaders() {
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const calendarHeader = document.getElementById("calendar-header");
+  weekdays.forEach((weekday) => {
+    const dayList = document.createElement("li");
+    dayList.className = "weekdays";
+    dayList.textContent = weekday;
+    calendarHeader.append(dayList);
+  });
+  return calendarHeader;
+}
+
+const calendarHeader = createCalendarHeaders();
+
 window.onload = function () {
   document.getElementById("default-message").innerText =
     `${getGreeting()} - there are ${daysData.length} known days`;

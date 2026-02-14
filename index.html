@@ -3,6 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Days-calendar</title>
+    <link href="./styles.css" rel="stylesheet" />
     <script type="module" src="common.mjs"></script>
     <script type="module" src="web.mjs"></script>
     <script
@@ -16,16 +17,23 @@
     </header>
     <nav id="nav-bar">
       <div id="date-select-field">
-        <select>
+        <select id="month-select">
           <option value="">Month</option>
+          <option>Jan</option>
         </select>
-        <select>
+        <select id="year-select">
           <option value="">Year</option>
         </select>
       </div>
       <div id="navigate-button-field">
-        <i class="fa-solid fa-caret-left" id="go-previous-button"></i>
-        <i class="fa-solid fa-caret-right" id="go-next-button"></i>
+        <i
+          class="fa-solid fa-caret-left navigate-button"
+          id="go-previous-button"
+        ></i>
+        <i
+          class="fa-solid fa-caret-right navigate-button"
+          id="go-next-button"
+        ></i>
       </div>
     </nav>
     <main></main>

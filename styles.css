@@ -37,11 +37,12 @@ nav {
 #month-select,
 #year-select {
   font-size: 1.5rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 5px;
   background-color: var(--alice-blue);
   color: var(--dark-blue);
   font-family: var(--font-family);
+  cursor: pointer;
 }
 
 #navigate-button-field {
@@ -60,4 +61,6 @@ nav {
 
 .navigate-button:hover {
   color: var(--alice-blue);
+  transform: scale(1.2);
+  cursor: pointer;
 }

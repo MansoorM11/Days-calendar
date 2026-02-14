@@ -64,3 +64,11 @@ nav {
   transform: scale(1.2);
   cursor: pointer;
 }
+
+#calendar-body {
+  border: solid;
+  width: 100%;
+  height: 3rem;
+  display: grid;
+  grid-template-columns: repeat(7 1fr);
+}

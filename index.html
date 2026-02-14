@@ -1,9 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <script type="module" src="common.mjs"></script>
-        <script type="module" src="web.mjs"></script>
-    </head>
-    <body>
-    </body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Days-calendar</title>
+    <script type="module" src="common.mjs"></script>
+    <script type="module" src="web.mjs"></script>
+    <script
+      src="https://kit.fontawesome.com/c28df1f041.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1 id="page-header">Days-Calendar</h1>
+    </header>
+    <nav id="nav-bar">
+      <div id="date-select-field">
+        <select>
+          <option value="">Month</option>
+        </select>
+        <select>
+          <option value="">Year</option>
+        </select>
+      </div>
+      <div id="navigate-button-field">
+        <i class="fa-solid fa-caret-left" id="go-previous-button"></i>
+        <i class="fa-solid fa-caret-right" id="go-next-button"></i>
+      </div>
+    </nav>
+    <main></main>
+    <footer>Created by Brian & Mansoor</footer>
+  </body>
 </html>

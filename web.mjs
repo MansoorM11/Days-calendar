@@ -6,21 +6,54 @@
 import { getGreeting } from "./common.mjs";
 import daysData from "./days.json" with { type: "json" };
 
+const state = {
+  year: 0,
+  month: 0,
+};
+
 function createCalendarHeaders() {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const calendarHeader = document.getElementById("calendar-header");
-  weekdays.forEach((weekday) => {
-    const dayList = document.createElement("li");
-    dayList.className = "weekdays";
-    dayList.textContent = weekday;
-    calendarHeader.append(dayList);
+  weekdays.forEach((weekday, index) => {
+    const dayLiElement = document.createElement("li");
+    dayLiElement.className = "weekdays";
+    dayLiElement.textContent = weekday;
+    dayLiElement.dataset.value = index;
+    dayLiElement.name = weekday;
+    dayLiElement.ariaLabel = weekday;
+    calendarHeader.append(dayLiElement);
   });
   return calendarHeader;
 }
 
-const calendarHeader = createCalendarHeaders();
+function getCurrentDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  state.year = year;
+  state.month = month;
+
+  console.log(state.year);
+  console.log(state.month);
+}
+
+function populateMonthSelect() {
+  const months = Array.from({ length: 12 }, (element, index) => {
+    return new Date(0, index).toLocaleString("en-GB", { month: "short" });
+  });
+  console.log(months);
+  const monthSelect = document.getElementById("month-select");
+  months.forEach((month, index) => {
+    const monthOption = document.createElement("option");
+    monthOption.textContent = month;
+    monthOption.value = index;
+    monthSelect.append(monthOption);
+  });
+}
 
 window.onload = function () {
-  document.getElementById("default-message").innerText =
-    `${getGreeting()} - there are ${daysData.length} known days`;
+  createCalendarHeaders();
+  getCurrentDate();
+  populateMonthSelect();
 };

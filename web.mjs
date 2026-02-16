@@ -28,7 +28,8 @@ function createCalendarHeaders() {
 
 function populateMonthSelect() {
   const months = Array.from({ length: 12 }, (element, index) => {
-    return new Date(0, index).toLocaleString("en-GB", { month: "short" });
+    const dateObject = new Date(0, index);
+    return dateObject.toLocaleString("en-GB", { month: "short" });
   });
   const monthSelect = document.getElementById("month-select");
   months.forEach((month, index) => {
@@ -61,36 +62,89 @@ function getCurrentDate() {
   yearInput.value = year;
 }
 
+function getFirstAndLastDateAndIndex() {
+  const firstDateObject = new Date(state.year, state.month, 1);
+  const weekdayIndexOfFirstDate = firstDateObject.getDay();
+  const lastDateObject = new Date(state.year, state.month + 1, 0);
+  const weekdayIndexOfLastDate = lastDateObject.getDay();
+
+  console.log(firstDateObject, lastDateObject);
+
+  return {
+    firstDateObject,
+    weekdayIndexOfFirstDate,
+    lastDateObject,
+    weekdayIndexOfLastDate,
+  };
+}
+
+function createEmptySpace(startIndex, weekdayIndex) {
+  const emptySpaceArray = [];
+  for (
+    let emptyNumber = startIndex;
+    emptyNumber < weekdayIndex;
+    emptyNumber++
+  ) {
+    const emptyDate = document.createElement("li");
+    emptyDate.textContent = "X";
+    emptyDate.className = "date-cell";
+    emptySpaceArray.push(emptyDate);
+  }
+  return emptySpaceArray;
+}
+
+function createDatesOfMonth(firstDateObject, lastDateObject) {
+  const datesArray = [];
+  const firstDateNumber = firstDateObject.getDate();
+  const lastDateNumber = lastDateObject.getDate();
+  for (
+    let dateNumber = firstDateNumber;
+    dateNumber <= lastDateNumber;
+    dateNumber++
+  ) {
+    const dateCell = document.createElement("li");
+    dateCell.textContent = dateNumber;
+    dateCell.className = "date-cell";
+    datesArray.push(dateCell);
+  }
+  return datesArray;
+}
+
 function createMonthCalendar() {
   const calendarBody = document.getElementById("calendar-body");
 
   calendarBody.innerHTML = "";
 
-  let firstDate = new Date(state.year, state.month, 1);
-  let weekdayIndexOfFirstDate = firstDate.getDay();
-  let lastDate = new Date(state.year, state.month + 1, 0).getDate();
-  console.log(state.month);
-  console.log(lastDate);
+  const {
+    firstDateObject,
+    weekdayIndexOfFirstDate,
+    lastDateObject,
+    weekdayIndexOfLastDate,
+  } = getFirstAndLastDateAndIndex();
 
-  for (let emptySpace = 0; emptySpace < weekdayIndexOfFirstDate; emptySpace++) {
-    const emptyDate = document.createElement("li");
-    emptyDate.textContent = "X";
-    emptyDate.className = "date-cell";
-    calendarBody.append(emptyDate);
-  }
+  const emptySpaceAhead = createEmptySpace(0, weekdayIndexOfFirstDate);
 
-  for (let dateNumber = 1; dateNumber <= lastDate; dateNumber++) {
-    const dateCell = document.createElement("li");
-    dateCell.textContent = dateNumber;
-    dateCell.className = "date-cell";
-    calendarBody.append(dateCell);
-  }
+  const datesOfMonth = createDatesOfMonth(firstDateObject, lastDateObject);
+
+  const emptySpaceAfterward = createEmptySpace(weekdayIndexOfLastDate, 6);
+
+  calendarBody.append(
+    ...emptySpaceAhead,
+    ...datesOfMonth,
+    ...emptySpaceAfterward,
+  );
 }
 
 function addListeners() {
   const monthSelect = document.getElementById("month-select");
   monthSelect.addEventListener("change", (e) => {
-    setMonth(Number(e.target.value.trim()));
+    setMonth(Number(e.target.value));
+    createMonthCalendar();
+  });
+
+  const yearInput = document.getElementById("year-input");
+  yearInput.addEventListener("input", (e) => {
+    setYear(Number(e.target.value));
     createMonthCalendar();
   });
 }

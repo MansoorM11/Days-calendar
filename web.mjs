@@ -62,13 +62,11 @@ function getCurrentDate() {
   yearInput.value = year;
 }
 
-function getFirstAndLastDateAndIndex() {
+function getFirstAndLastDateObjectAndIndex() {
   const firstDateObject = new Date(state.year, state.month, 1);
   const weekdayIndexOfFirstDate = firstDateObject.getDay();
   const lastDateObject = new Date(state.year, state.month + 1, 0);
   const weekdayIndexOfLastDate = lastDateObject.getDay();
-
-  console.log(firstDateObject, lastDateObject);
 
   return {
     firstDateObject,
@@ -86,8 +84,9 @@ function createEmptySpace(startIndex, weekdayIndex) {
     emptyNumber++
   ) {
     const emptyDate = document.createElement("li");
-    emptyDate.textContent = "X";
+    emptyDate.textContent = "";
     emptyDate.className = "date-cell";
+    emptyDate.style.backgroundColor = "lightgrey";
     emptySpaceArray.push(emptyDate);
   }
   return emptySpaceArray;
@@ -120,7 +119,7 @@ function createMonthCalendar() {
     weekdayIndexOfFirstDate,
     lastDateObject,
     weekdayIndexOfLastDate,
-  } = getFirstAndLastDateAndIndex();
+  } = getFirstAndLastDateObjectAndIndex();
 
   const emptySpaceAhead = createEmptySpace(0, weekdayIndexOfFirstDate);
 

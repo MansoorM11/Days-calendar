@@ -69,14 +69,16 @@ nav {
   cursor: pointer;
 }
 
-#calendar-header {
+#calendar-header,
+#calendar-body {
   width: 100%;
   height: 3rem;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
 
-.weekdays {
+.weekdays,
+.date-cell {
   border: solid 0.1rem var(--dark-blue);
   list-style: none;
   display: flex;

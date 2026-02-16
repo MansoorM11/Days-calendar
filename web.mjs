@@ -26,23 +26,10 @@ function createCalendarHeaders() {
   return calendarHeader;
 }
 
-function getCurrentDate() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth();
-
-  state.year = year;
-  state.month = month;
-
-  console.log(state.year);
-  console.log(state.month);
-}
-
 function populateMonthSelect() {
   const months = Array.from({ length: 12 }, (element, index) => {
     return new Date(0, index).toLocaleString("en-GB", { month: "short" });
   });
-  console.log(months);
   const monthSelect = document.getElementById("month-select");
   months.forEach((month, index) => {
     const monthOption = document.createElement("option");
@@ -52,8 +39,53 @@ function populateMonthSelect() {
   });
 }
 
+function setMonth(monthValue) {
+  state.month = monthValue;
+}
+
+function setYear(yearValue) {
+  state.year = yearValue;
+}
+
+function getCurrentDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  setYear(year);
+  setMonth(month);
+
+  const monthSelect = document.getElementById("month-select");
+  monthSelect.value = month;
+  const yearInput = document.getElementById("year-input");
+  yearInput.value = year;
+}
+
+function createMonthCalendar() {
+  const calendarBody = document.getElementById("calendar-body");
+
+  const firstDate = new Date(state.year, state.month, 1);
+  const weekdayIndexOfFirstDate = firstDate.getDay();
+  const lastDate = new Date(state.year, state.month + 1, 0).getDate();
+
+  for (let emptySpace = 0; emptySpace < weekdayIndexOfFirstDate; emptySpace++) {
+    const emptyDate = document.createElement("li");
+    emptyDate.textContent = "X";
+    emptyDate.className = "date-cell";
+    calendarBody.append(emptyDate);
+  }
+
+  for (let dateNumber = 1; dateNumber <= lastDate; dateNumber++) {
+    const dateCell = document.createElement("li");
+    dateCell.textContent = dateNumber;
+    dateCell.className = "date-cell";
+    calendarBody.append(dateCell);
+  }
+}
+
 window.onload = function () {
   createCalendarHeaders();
-  getCurrentDate();
   populateMonthSelect();
+  getCurrentDate();
+  createMonthCalendar();
 };

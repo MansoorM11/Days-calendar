@@ -133,6 +133,18 @@ function createMonthCalendar() {
   );
 }
 
+function navigateClickHandler(leftOrRight) {
+  const newDate = new Date(state.year, state.month + leftOrRight, 1);
+
+  state.year = newDate.getFullYear();
+  state.month = newDate.getMonth();
+
+  document.getElementById("year-input").value = state.year;
+  document.getElementById("month-select").value = state.month;
+
+  createMonthCalendar();
+}
+
 function addListeners() {
   const monthSelect = document.getElementById("month-select");
   monthSelect.addEventListener("change", (e) => {
@@ -148,34 +160,12 @@ function addListeners() {
 
   const previousButton = document.getElementById("go-previous-button");
   previousButton.addEventListener("click", () => {
-    if (state.month > 0) {
-      const monthValue = state.month - 1;
-      setMonth(monthValue);
-      monthSelect.value = monthValue;
-    } else {
-      const monthValue = 11;
-      setMonth(monthValue);
-      monthSelect.value = monthValue;
-      setYear(state.year - 1);
-      yearInput.value = state.year;
-    }
-    createMonthCalendar();
+    navigateClickHandler(-1);
   });
 
   const nextButton = document.getElementById("go-next-button");
   nextButton.addEventListener("click", () => {
-    if (state.month < 11) {
-      const monthValue = state.month + 1;
-      setMonth(monthValue);
-      monthSelect.value = monthValue;
-    } else {
-      const monthValue = 0;
-      setMonth(monthValue);
-      monthSelect.value = monthValue;
-      setYear(state.year + 1);
-      yearInput.value = state.year;
-    }
-    createMonthCalendar();
+    navigateClickHandler(1);
   });
 }
 

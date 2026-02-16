@@ -64,9 +64,13 @@ function getCurrentDate() {
 function createMonthCalendar() {
   const calendarBody = document.getElementById("calendar-body");
 
-  const firstDate = new Date(state.year, state.month, 1);
-  const weekdayIndexOfFirstDate = firstDate.getDay();
-  const lastDate = new Date(state.year, state.month + 1, 0).getDate();
+  calendarBody.innerHTML = "";
+
+  let firstDate = new Date(state.year, state.month, 1);
+  let weekdayIndexOfFirstDate = firstDate.getDay();
+  let lastDate = new Date(state.year, state.month + 1, 0).getDate();
+  console.log(state.month);
+  console.log(lastDate);
 
   for (let emptySpace = 0; emptySpace < weekdayIndexOfFirstDate; emptySpace++) {
     const emptyDate = document.createElement("li");
@@ -83,9 +87,18 @@ function createMonthCalendar() {
   }
 }
 
+function addListeners() {
+  const monthSelect = document.getElementById("month-select");
+  monthSelect.addEventListener("change", (e) => {
+    setMonth(Number(e.target.value.trim()));
+    createMonthCalendar();
+  });
+}
+
 window.onload = function () {
   createCalendarHeaders();
   populateMonthSelect();
   getCurrentDate();
   createMonthCalendar();
+  addListeners();
 };

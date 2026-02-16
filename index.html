@@ -22,21 +22,25 @@
         <input id="year-input" type="number" value="" />
       </div>
       <div id="navigate-button-field">
-        <i
-          class="fa-solid fa-caret-left navigate-button"
+        <button
           id="go-previous-button"
-          role="button"
-          tabindex="0"
-          aria-label="Previous Month"
-        ></i>
+          class="navigate-button"
+          aria-label="previous month"
+        >
+          <i class="fa-solid fa-caret-left navigate-icon"></i>
+        </button>
 
-        <i
-          class="fa-solid fa-caret-right navigate-button"
+        <button
           id="go-next-button"
-          role="button"
-          tabindex="0"
-          aria-label="next Month"
-        ></i>
+          class="navigate-button"
+          aria-label="next month"
+        >
+          <i
+            class="fa-solid fa-caret-right navigate-icon"
+            id="go-next-button"
+            aria-label="next Month"
+          ></i>
+        </button>
       </div>
     </nav>
     <main>

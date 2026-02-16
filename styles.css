@@ -6,6 +6,7 @@
 
 :root {
   --alice-blue: aliceblue;
+  --light-sky-blue: rgb(180, 213, 241);
   --dark-blue: rgb(0, 0, 97);
   --font-family: Arial, Helvetica, sans-serif;
 }
@@ -22,7 +23,7 @@ nav {
   padding: 1rem;
   width: 100%;
   justify-content: space-evenly;
-  background-color: rgb(180, 213, 241);
+  background-color: var(--light-sky-blue);
   align-items: center;
 }
 
@@ -59,11 +60,14 @@ nav {
 }
 
 .navigate-button {
-  font-size: 4rem;
+  font-size: 3.5rem;
   color: var(--dark-blue);
+  background-color: var(--light-sky-blue);
+  border: 0;
 }
 
-.navigate-button:hover {
+.navigate-icon:hover,
+.navigate-button:focus {
   color: var(--alice-blue);
   transform: scale(1.2);
   cursor: pointer;

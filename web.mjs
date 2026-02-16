@@ -85,8 +85,7 @@ function createEmptySpace(startIndex, weekdayIndex) {
   ) {
     const emptyDate = document.createElement("li");
     emptyDate.textContent = "";
-    emptyDate.className = "date-cell";
-    emptyDate.style.backgroundColor = "lightgrey";
+    emptyDate.className = "empty-cell";
     emptySpaceArray.push(emptyDate);
   }
   return emptySpaceArray;
@@ -144,6 +143,38 @@ function addListeners() {
   const yearInput = document.getElementById("year-input");
   yearInput.addEventListener("input", (e) => {
     setYear(Number(e.target.value));
+    createMonthCalendar();
+  });
+
+  const previousButton = document.getElementById("go-previous-button");
+  previousButton.addEventListener("click", () => {
+    if (state.month > 0) {
+      const monthValue = state.month - 1;
+      setMonth(monthValue);
+      monthSelect.value = monthValue;
+    } else {
+      const monthValue = 11;
+      setMonth(monthValue);
+      monthSelect.value = monthValue;
+      setYear(state.year - 1);
+      yearInput.value = state.year;
+    }
+    createMonthCalendar();
+  });
+
+  const nextButton = document.getElementById("go-next-button");
+  nextButton.addEventListener("click", () => {
+    if (state.month < 11) {
+      const monthValue = state.month + 1;
+      setMonth(monthValue);
+      monthSelect.value = monthValue;
+    } else {
+      const monthValue = 0;
+      setMonth(monthValue);
+      monthSelect.value = monthValue;
+      setYear(state.year + 1);
+      yearInput.value = state.year;
+    }
     createMonthCalendar();
   });
 }

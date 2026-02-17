@@ -3,7 +3,6 @@
 // Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
 // You can't open the index.html file using a file:// URL.
 
-import { getGreeting } from "./common.mjs";
 import daysData from "./days.json" with { type: "json" };
 
 const state = {
@@ -108,6 +107,9 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
   const datesArray = [];
   const firstDateNumber = firstDateObject.getDate();
   const lastDateNumber = lastDateObject.getDate();
+
+  const weekdaysObject = {};
+
   for (
     let dateNumber = firstDateNumber;
     dateNumber <= lastDateNumber;
@@ -115,8 +117,65 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
   ) {
     const dateCell = createDateCell(dateNumber);
     datesArray.push(dateCell);
+    const weekdayIndex = new Date(state.year, state.month, dateNumber).getDay();
+    const weekdaysArray = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const weekdayKey = weekdaysArray[weekdayIndex];
+    if (weekdaysObject[weekdayKey]) {
+      weekdaysObject[weekdayKey].push(dateNumber);
+    } else {
+      weekdaysObject[weekdayKey] = [dateNumber];
+    }
   }
-  return datesArray;
+  console.log(weekdaysObject);
+  return { datesArray, weekdaysObject };
+}
+
+function filterSpecialDaysInTheMonth() {
+  return daysData.filter(
+    ({ monthName }) => new Date(`${monthName} 1`).getMonth() === state.month,
+  );
+}
+
+function addSpecialDayOnCalendar(targetDateCell) {
+  if (targetDateCell) {
+    const eventTitle = document.createElement("p");
+    eventTitle.textContent = "Hello";
+    targetDateCell.querySelector(".date-cell-body").append(eventTitle);
+  }
+}
+
+function findDateOfSpecialDays(weekdaysObject, datesArray) {
+  const specialDays = filterSpecialDaysInTheMonth();
+  console.log(specialDays);
+
+  const occurrenceMap = {
+    first: 0,
+    second: 1,
+    third: 2,
+    fourth: 3,
+    last: -1,
+  };
+
+  specialDays.forEach(({ dayName, occurrence }) => {
+    const datesArrayOfWeekday = weekdaysObject[dayName];
+    const dateNumber =
+      datesArrayOfWeekday[occurrenceMap[occurrence]] ||
+      datesArrayOfWeekday[
+        datesArrayOfWeekday.length + occurrenceMap[occurrence]
+      ];
+    console.log(dateNumber);
+    // adding the day on calendar
+    const targetDateCell = datesArray[dateNumber - 1];
+    addSpecialDayOnCalendar(targetDateCell);
+  });
 }
 
 function createMonthCalendar() {
@@ -133,15 +192,20 @@ function createMonthCalendar() {
 
   const emptySpaceAhead = createEmptySpace(0, weekdayIndexOfFirstDate);
 
-  const datesOfMonth = createDatesOfMonth(firstDateObject, lastDateObject);
+  const { datesArray, weekdaysObject } = createDatesOfMonth(
+    firstDateObject,
+    lastDateObject,
+  );
 
   const emptySpaceAfterward = createEmptySpace(weekdayIndexOfLastDate, 6);
 
   calendarBody.append(
     ...emptySpaceAhead,
-    ...datesOfMonth,
+    ...datesArray,
     ...emptySpaceAfterward,
   );
+
+  findDateOfSpecialDays(weekdaysObject, datesArray);
 }
 
 function navigateClickHandler(addOneOrMinusOne) {

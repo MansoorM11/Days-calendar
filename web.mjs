@@ -91,7 +91,18 @@ function createEmptySpace(startIndex, weekdayIndex) {
   return emptySpaceArray;
 }
 
-function createDateCell() {}
+function createDateCell(dateNumber) {
+  const dateCell = document.createElement("div");
+  dateCell.className = "date-cell";
+  const dateCellHeader = document.createElement("p");
+  dateCellHeader.textContent = dateNumber;
+  dateCellHeader.className = "date-cell-header";
+  const dateCellBody = document.createElement("div");
+  dateCellBody.className = "date-cell-body";
+
+  dateCell.append(dateCellHeader, dateCellBody);
+  return dateCell;
+}
 
 function createDatesOfMonth(firstDateObject, lastDateObject) {
   const datesArray = [];
@@ -102,16 +113,7 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
     dateNumber <= lastDateNumber;
     dateNumber++
   ) {
-    const dateCell = document.createElement("div");
-    dateCell.className = "date-cell";
-    const dateCellHeader = document.createElement("p");
-    dateCellHeader.textContent = dateNumber;
-    dateCellHeader.className = "date-cell-header";
-    const dateCellBody = document.createElement("div");
-    dateCellBody.className = "date-cell-body";
-
-    dateCell.append(dateCellHeader, dateCellBody);
-
+    const dateCell = createDateCell(dateNumber);
     datesArray.push(dateCell);
   }
   return datesArray;

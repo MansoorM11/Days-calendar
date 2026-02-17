@@ -1,6 +1,7 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Days-calendar</title>
     <link href="./styles.css" rel="stylesheet" />
@@ -18,8 +19,8 @@
     </header>
     <nav id="nav-bar">
       <div id="date-select-field">
-        <select id="month-select"></select>
-        <input id="year-input" type="number" value="" />
+        <select id="month-select" aria-label="month select"></select>
+        <input id="year-input" type="number" aria-label="year input" value="" />
       </div>
       <div id="navigate-button-field">
         <button
@@ -46,7 +47,7 @@
     <main>
       <section id="calendar-section">
         <ul id="calendar-header"></ul>
-        <ul id="calendar-body"></ul>
+        <div id="calendar-body"></div>
       </section>
     </main>
     <footer>Created by Brian & Mansoor</footer>

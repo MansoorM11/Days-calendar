@@ -83,13 +83,15 @@ nav {
 #calendar-header,
 #calendar-body {
   width: 98%;
-  height: 3rem;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
 
-.weekdays,
-.date-cell {
+#calendar-header {
+  height: 3rem;
+}
+
+.weekdays {
   border: solid 0.1rem var(--dark-blue);
   list-style: none;
   display: flex;
@@ -103,6 +105,21 @@ nav {
   background-color: var(--alice-blue);
   border: solid 0.1rem var(--dark-blue);
   list-style: none;
+}
+
+.date-cell {
+  border: solid 0.1rem var(--dark-blue);
+  height: 5rem;
+}
+
+.date-cell-header {
+  text-align: center;
+  font-size: large;
+  color: var(--dark-blue);
+}
+
+.date-cell-body {
+  height: 70%;
 }
 
 footer {

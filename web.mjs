@@ -82,10 +82,10 @@ function createEmptySpace(startIndex, weekdayIndex) {
     emptyNumber < weekdayIndex;
     emptyNumber++
   ) {
-    const emptyDateCell = document.createElement("li");
+    const emptyDateCell = document.createElement("div");
     emptyDateCell.textContent = "";
     emptyDateCell.className = "empty-cell";
-    emptyDateCell.ariaLabel = "empty-space";
+    emptyDateCell.name = "empty-space";
     emptySpaceArray.push(emptyDateCell);
   }
   return emptySpaceArray;

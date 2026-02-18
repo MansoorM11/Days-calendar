@@ -149,6 +149,7 @@ function addSpecialDayOnCalendar(targetDateCell, name) {
   if (targetDateCell) {
     const eventTitle = document.createElement("p");
     eventTitle.textContent = name;
+    eventTitle.className = "event-title";
     targetDateCell.querySelector(".date-cell-body").append(eventTitle);
   }
 }

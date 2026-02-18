@@ -99,6 +99,7 @@ nav {
   align-items: center;
   font-size: 2rem;
   color: var(--dark-blue);
+  width: auto;
 }
 
 .empty-cell {
@@ -110,6 +111,7 @@ nav {
 .date-cell {
   border: solid 0.1rem var(--dark-blue);
   height: 5rem;
+  width: auto;
 }
 
 .date-cell-header {
@@ -120,6 +122,13 @@ nav {
 
 .date-cell-body {
   height: 70%;
+}
+
+.event-title {
+  background-color: var(--alice-blue);
+  color: var(--dark-blue);
+  text-align: center;
+  font-size: auto;
 }
 
 footer {

@@ -7,11 +7,6 @@
     <link href="./styles.css" rel="stylesheet" />
     <script type="module" src="common.mjs"></script>
     <script type="module" src="web.mjs"></script>
-    <script
-      type="module"
-      src="https://kit.fontawesome.com/c28df1f041.js"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <header>
@@ -28,7 +23,7 @@
           class="navigate-button"
           aria-label="previous month"
         >
-          <i class="fa-solid fa-caret-left navigate-icon"></i>
+          <p class="navigate-icon" aria-label="left triangle">◀</p>
         </button>
 
         <button
@@ -36,11 +31,7 @@
           class="navigate-button"
           aria-label="next month"
         >
-          <i
-            class="fa-solid fa-caret-right navigate-icon"
-            id="go-next-button"
-            aria-label="next Month"
-          ></i>
+          <p class="navigate-icon" aria-label="right triangle">▶</p>
         </button>
       </div>
     </nav>

@@ -17,7 +17,7 @@ function createCalendarHeaders() {
     const dayLiElement = document.createElement("li");
     dayLiElement.className = "weekdays";
     dayLiElement.textContent = weekday;
-    dayLiElement.dataset.value = index;
+    dayLiElement.value = index;
     dayLiElement.name = weekday;
     dayLiElement.ariaLabel = weekday;
     calendarHeader.append(dayLiElement);
@@ -26,39 +26,39 @@ function createCalendarHeaders() {
 }
 
 function populateMonthSelect() {
-  const months = Array.from({ length: 12 }, (element, index) => {
+  const monthsArray = Array.from({ length: 12 }, (element, index) => {
     const dateObject = new Date(0, index);
     return dateObject.toLocaleString("en-GB", { month: "short" });
   });
   const monthSelect = document.getElementById("month-select");
-  months.forEach((month, index) => {
+  monthsArray.forEach((monthString, index) => {
     const monthOption = document.createElement("option");
-    monthOption.textContent = month;
+    monthOption.textContent = monthString;
     monthOption.value = index;
     monthSelect.append(monthOption);
   });
 }
 
-function setMonth(monthValue) {
-  state.month = monthValue;
+function setMonth(monthNumber) {
+  state.month = monthNumber;
 }
 
-function setYear(yearValue) {
-  state.year = yearValue;
+function setYear(yearNumber) {
+  state.year = yearNumber;
 }
 
 function getCurrentDate() {
   const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth();
+  const yearNumber = date.getFullYear();
+  const monthNumber = date.getMonth();
 
-  setYear(year);
-  setMonth(month);
+  setYear(yearNumber);
+  setMonth(monthNumber);
 
   const monthSelect = document.getElementById("month-select");
-  monthSelect.value = month;
+  monthSelect.value = monthNumber;
   const yearInput = document.getElementById("year-input");
-  yearInput.value = year;
+  yearInput.value = yearNumber;
 }
 
 function getFirstAndLastDateObjectAndIndex() {
@@ -82,10 +82,11 @@ function createEmptySpace(startIndex, weekdayIndex) {
     emptyNumber < weekdayIndex;
     emptyNumber++
   ) {
-    const emptyDate = document.createElement("li");
-    emptyDate.textContent = "";
-    emptyDate.className = "empty-cell";
-    emptySpaceArray.push(emptyDate);
+    const emptyDateCell = document.createElement("li");
+    emptyDateCell.textContent = "";
+    emptyDateCell.className = "empty-cell";
+    emptyDateCell.ariaLabel = "empty-space";
+    emptySpaceArray.push(emptyDateCell);
   }
   return emptySpaceArray;
 }
@@ -103,21 +104,20 @@ function createDateCell(dateNumber) {
   return dateCell;
 }
 
-function createDatesOfMonth(firstDateObject, lastDateObject) {
-  const datesArray = [];
+function createObjectOfWeekdayArrays(targetYear, targetMonth) {
+  const firstDateObject = new Date(targetYear, targetMonth, 1);
+  const lastDateObject = new Date(targetYear, targetMonth + 1, 0);
   const firstDateNumber = firstDateObject.getDate();
   const lastDateNumber = lastDateObject.getDate();
 
-  const weekdaysObject = {};
+  const objectOfWeekdayArrays = {};
 
   for (
     let dateNumber = firstDateNumber;
     dateNumber <= lastDateNumber;
     dateNumber++
   ) {
-    const dateCell = createDateCell(dateNumber);
-    datesArray.push(dateCell);
-    const weekdayIndex = new Date(state.year, state.month, dateNumber).getDay();
+    const weekdayIndex = new Date(targetYear, targetMonth, dateNumber).getDay();
     const weekdaysArray = [
       "Sunday",
       "Monday",
@@ -127,16 +127,32 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
       "Friday",
       "Saturday",
     ];
-    // creating object
+
     const weekdayKey = weekdaysArray[weekdayIndex];
-    if (weekdaysObject[weekdayKey]) {
-      weekdaysObject[weekdayKey].push(dateNumber);
+    if (objectOfWeekdayArrays[weekdayKey]) {
+      objectOfWeekdayArrays[weekdayKey].push(dateNumber);
     } else {
-      weekdaysObject[weekdayKey] = [dateNumber];
+      objectOfWeekdayArrays[weekdayKey] = [dateNumber];
     }
   }
-  console.log(weekdaysObject);
-  return { datesArray, weekdaysObject };
+  console.log(objectOfWeekdayArrays);
+  return objectOfWeekdayArrays;
+}
+
+function createDatesOfMonth(firstDateObject, lastDateObject) {
+  const dateCellsArray = [];
+  const firstDateNumber = firstDateObject.getDate();
+  const lastDateNumber = lastDateObject.getDate();
+
+  for (
+    let dateNumber = firstDateNumber;
+    dateNumber <= lastDateNumber;
+    dateNumber++
+  ) {
+    const dateCell = createDateCell(dateNumber);
+    dateCellsArray.push(dateCell);
+  }
+  return dateCellsArray;
 }
 
 function filterSpecialDaysInTheMonth() {
@@ -154,7 +170,7 @@ function addSpecialDayOnCalendar(targetDateCell, name) {
   }
 }
 
-function findDateOfSpecialDays(weekdaysObject, datesArray) {
+function findDateOfSpecialDays(objectOfWeekdayArrays, dateCellsArray) {
   const specialDays = filterSpecialDaysInTheMonth();
   console.log(specialDays);
 
@@ -167,7 +183,7 @@ function findDateOfSpecialDays(weekdaysObject, datesArray) {
   };
 
   specialDays.forEach(({ name, dayName, occurrence }) => {
-    const datesArrayOfWeekday = weekdaysObject[dayName];
+    const datesArrayOfWeekday = objectOfWeekdayArrays[dayName];
     const dateNumber =
       datesArrayOfWeekday[occurrenceMap[occurrence]] ||
       datesArrayOfWeekday[
@@ -175,7 +191,7 @@ function findDateOfSpecialDays(weekdaysObject, datesArray) {
       ];
     console.log(dateNumber);
     // adding the day on calendar
-    const targetDateCell = datesArray[dateNumber - 1];
+    const targetDateCell = dateCellsArray[dateNumber - 1];
     addSpecialDayOnCalendar(targetDateCell, name);
   });
 }
@@ -192,22 +208,29 @@ function createMonthCalendar() {
     weekdayIndexOfLastDate,
   } = getFirstAndLastDateObjectAndIndex();
 
-  const emptySpaceAhead = createEmptySpace(0, weekdayIndexOfFirstDate);
+  const sundayIndex = 0;
+  const saturdayIndex = 6;
 
-  const { datesArray, weekdaysObject } = createDatesOfMonth(
-    firstDateObject,
-    lastDateObject,
+  const emptySpaceAhead = createEmptySpace(
+    sundayIndex,
+    weekdayIndexOfFirstDate,
   );
 
-  const emptySpaceAfterward = createEmptySpace(weekdayIndexOfLastDate, 6);
+  const dateCellsArray = createDatesOfMonth(firstDateObject, lastDateObject);
+
+  const emptySpaceAfterward = createEmptySpace(
+    weekdayIndexOfLastDate,
+    saturdayIndex,
+  );
 
   calendarBody.append(
     ...emptySpaceAhead,
-    ...datesArray,
+    ...dateCellsArray,
     ...emptySpaceAfterward,
   );
 
-  findDateOfSpecialDays(weekdaysObject, datesArray);
+  // findDateOfSpecialDays(objectOfWeekdayArrays, dateCellsArray);
+  createObjectOfWeekdayArrays(state.year, state.month);
 }
 
 function navigateClickHandler(addOneOrMinusOne) {

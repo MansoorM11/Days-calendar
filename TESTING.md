@@ -14,7 +14,7 @@
 
 #### The first row contains Tuesday October 1 - Sunday October 6. Sunday and Monday are either labelled for September 29/30 or are blank.
 
-- Since the requirement has been updated to set Sunday is on the first column, the Sunday October 6 will be on the second row, instead of the first. However, the rest of the requirements are met by confirming Sunday and Monday are blank, and the first row contains Tuesday October 1 - Saturday 5.
+- Since the requirements for everyone have been updated to set Sunday is on the first column in the second points, the Sunday October 6 will be on the second row, instead of the first. However, the rest of the requirements are met by confirming Sunday and Monday are blank, and the first row contains Tuesday October 1 - Saturday 5.
 
 #### The last row contains Monday October 28 - Thursday October 31. Friday and Saturday are either labelled for November or are blank.
 

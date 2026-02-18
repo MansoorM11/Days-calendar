@@ -127,6 +127,7 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
       "Friday",
       "Saturday",
     ];
+    // creating object
     const weekdayKey = weekdaysArray[weekdayIndex];
     if (weekdaysObject[weekdayKey]) {
       weekdaysObject[weekdayKey].push(dateNumber);
@@ -144,10 +145,10 @@ function filterSpecialDaysInTheMonth() {
   );
 }
 
-function addSpecialDayOnCalendar(targetDateCell) {
+function addSpecialDayOnCalendar(targetDateCell, name) {
   if (targetDateCell) {
     const eventTitle = document.createElement("p");
-    eventTitle.textContent = "Hello";
+    eventTitle.textContent = name;
     targetDateCell.querySelector(".date-cell-body").append(eventTitle);
   }
 }
@@ -164,7 +165,7 @@ function findDateOfSpecialDays(weekdaysObject, datesArray) {
     last: -1,
   };
 
-  specialDays.forEach(({ dayName, occurrence }) => {
+  specialDays.forEach(({ name, dayName, occurrence }) => {
     const datesArrayOfWeekday = weekdaysObject[dayName];
     const dateNumber =
       datesArrayOfWeekday[occurrenceMap[occurrence]] ||
@@ -174,7 +175,7 @@ function findDateOfSpecialDays(weekdaysObject, datesArray) {
     console.log(dateNumber);
     // adding the day on calendar
     const targetDateCell = datesArray[dateNumber - 1];
-    addSpecialDayOnCalendar(targetDateCell);
+    addSpecialDayOnCalendar(targetDateCell, name);
   });
 }
 

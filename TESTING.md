@@ -1,8 +1,9 @@
 Rubric
 For everyone
 
-Open the calendar, it should be showing the current month.
-\*\* Verify the month select is displaying current month (Now it is in Feb);
+#### Open the calendar, it should be showing the current month.
+
+- Open the webpage, it shows the calendar, and verify the month select is displaying the current month (Now it is in Feb);
 
 Go to October 2024. Observe:
 A grid of 5 rows x 7 columns.

@@ -1,8 +1,3 @@
-// This is a placeholder file which shows how you can access functions and data defined in other files.
-// It can be loaded into index.html.
-// Note that when running locally, in order to open a web page which uses modules, you must serve the directory over HTTP e.g. with https://www.npmjs.com/package/http-server
-// You can't open the index.html file using a file:// URL.
-
 import daysData from "./days.json" with { type: "json" };
 
 const state = {
@@ -25,13 +20,22 @@ function createCalendarHeaders() {
   return calendarHeader;
 }
 
-function populateMonthSelect() {
-  const monthsArray = Array.from({ length: 12 }, (element, index) => {
+function createMonthStringArray() {
+  const monthStringArray = [];
+  for (let index = 0; index < 12; index++) {
     const dateObject = new Date(0, index);
-    return dateObject.toLocaleString("en-GB", { month: "short" });
-  });
+    monthStringArray.push(
+      dateObject.toLocaleString("en-GB", { month: "short" }),
+    );
+  }
+  return monthStringArray;
+}
+
+function populateMonthSelect() {
+  const monthStringArray = createMonthStringArray();
+
   const monthSelect = document.getElementById("month-select");
-  monthsArray.forEach((monthString, index) => {
+  monthStringArray.forEach((monthString, index) => {
     const monthOption = document.createElement("option");
     monthOption.textContent = monthString;
     monthOption.value = index;
@@ -104,7 +108,7 @@ function createDateCell(dateNumber) {
   return dateCell;
 }
 
-function createObjectOfWeekdayArrays(targetYear, targetMonth) {
+export function createObjectOfWeekdayArrays(targetYear, targetMonth) {
   const firstDateObject = new Date(targetYear, targetMonth, 1);
   const lastDateObject = new Date(targetYear, targetMonth + 1, 0);
   const firstDateNumber = firstDateObject.getDate();
@@ -170,11 +174,11 @@ function attachEvent(targetDateCell, { name }) {
   }
 }
 
-function convertMonthNameToNumber(monthName) {
+export function convertMonthNameToNumber(monthName) {
   return new Date(`${monthName} 1`).getMonth();
 }
 
-function findOccurrenceIndex(occurrence) {
+export function findOccurrenceIndex(occurrence) {
   const occurrenceMap = {
     first: 0,
     second: 1,
@@ -186,7 +190,7 @@ function findOccurrenceIndex(occurrence) {
   return occurrenceMap[occurrence];
 }
 
-function findMonthNumberAndDateNumber(
+export function findMonthNumberAndDateNumber(
   year,
   { monthName, dayName, occurrence },
 ) {

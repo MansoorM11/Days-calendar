@@ -135,7 +135,7 @@ function createObjectOfWeekdayArrays(targetYear, targetMonth) {
       objectOfWeekdayArrays[weekdayKey] = [dateNumber];
     }
   }
-  console.log(objectOfWeekdayArrays);
+
   return objectOfWeekdayArrays;
 }
 
@@ -191,21 +191,21 @@ function findMonthNumberAndDateNumber(
   { monthName, dayName, occurrence },
 ) {
   const monthNumber = convertMonthNameToNumber(monthName);
-
   const occurrenceIndex = findOccurrenceIndex(occurrence);
+
   const objectOfWeekdayArrays = createObjectOfWeekdayArrays(year, monthNumber);
+
   const weekdayArray = objectOfWeekdayArrays[dayName];
+
   const exactDateNumberOfSpecialDay =
     weekdayArray[occurrenceIndex] ||
     weekdayArray[weekdayArray.length + occurrenceIndex];
-  console.log(exactDateNumberOfSpecialDay);
 
   return { monthNumber, exactDateNumberOfSpecialDay };
 }
 
 function addSpecialDaysOnCalendar(dateCellsArray) {
   const specialDaysOfTheMonthArray = filterSpecialDaysByMonthName(state.month);
-  console.log(specialDaysOfTheMonthArray);
 
   specialDaysOfTheMonthArray.forEach((specialDay) => {
     const { exactDateNumberOfSpecialDay } = findMonthNumberAndDateNumber(

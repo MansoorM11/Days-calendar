@@ -155,13 +155,13 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
   return dateCellsArray;
 }
 
-function filterSpecialDaysInTheMonth() {
+function filterSpecialDaysByMonthName(monthNumber) {
   return daysData.filter(
-    ({ monthName }) => new Date(`${monthName} 1`).getMonth() === state.month,
+    ({ monthName }) => convertMonthNameToNumber(monthName) == monthNumber,
   );
 }
 
-function addSpecialDayOnCalendar(targetDateCell, name) {
+function attachEvent(targetDateCell, { name }) {
   if (targetDateCell) {
     const eventTitle = document.createElement("p");
     eventTitle.textContent = name;
@@ -170,10 +170,11 @@ function addSpecialDayOnCalendar(targetDateCell, name) {
   }
 }
 
-function findDateOfSpecialDays(objectOfWeekdayArrays, dateCellsArray) {
-  const specialDays = filterSpecialDaysInTheMonth();
-  console.log(specialDays);
+function convertMonthNameToNumber(monthName) {
+  return new Date(`${monthName} 1`).getMonth();
+}
 
+function findOccurrenceIndex(occurrence) {
   const occurrenceMap = {
     first: 0,
     second: 1,
@@ -182,17 +183,38 @@ function findDateOfSpecialDays(objectOfWeekdayArrays, dateCellsArray) {
     last: -1,
   };
 
-  specialDays.forEach(({ name, dayName, occurrence }) => {
-    const datesArrayOfWeekday = objectOfWeekdayArrays[dayName];
-    const dateNumber =
-      datesArrayOfWeekday[occurrenceMap[occurrence]] ||
-      datesArrayOfWeekday[
-        datesArrayOfWeekday.length + occurrenceMap[occurrence]
-      ];
-    console.log(dateNumber);
-    // adding the day on calendar
-    const targetDateCell = dateCellsArray[dateNumber - 1];
-    addSpecialDayOnCalendar(targetDateCell, name);
+  return occurrenceMap[occurrence];
+}
+
+function findMonthNumberAndDateNumber(
+  year,
+  { monthName, dayName, occurrence },
+) {
+  const monthNumber = convertMonthNameToNumber(monthName);
+
+  const occurrenceIndex = findOccurrenceIndex(occurrence);
+  const objectOfWeekdayArrays = createObjectOfWeekdayArrays(year, monthNumber);
+  const weekdayArray = objectOfWeekdayArrays[dayName];
+  const exactDateNumberOfSpecialDay =
+    weekdayArray[occurrenceIndex] ||
+    weekdayArray[weekdayArray.length + occurrenceIndex];
+  console.log(exactDateNumberOfSpecialDay);
+
+  return { monthNumber, exactDateNumberOfSpecialDay };
+}
+
+function addSpecialDaysOnCalendar(dateCellsArray) {
+  const specialDaysOfTheMonthArray = filterSpecialDaysByMonthName(state.month);
+  console.log(specialDaysOfTheMonthArray);
+
+  specialDaysOfTheMonthArray.forEach((specialDay) => {
+    const { exactDateNumberOfSpecialDay } = findMonthNumberAndDateNumber(
+      state.year,
+      specialDay,
+    );
+
+    const targetDateCell = dateCellsArray[exactDateNumberOfSpecialDay - 1];
+    attachEvent(targetDateCell, specialDay);
   });
 }
 
@@ -229,8 +251,7 @@ function createMonthCalendar() {
     ...emptySpaceAfterward,
   );
 
-  // findDateOfSpecialDays(objectOfWeekdayArrays, dateCellsArray);
-  createObjectOfWeekdayArrays(state.year, state.month);
+  addSpecialDaysOnCalendar(dateCellsArray);
 }
 
 function navigateClickHandler(addOneOrMinusOne) {

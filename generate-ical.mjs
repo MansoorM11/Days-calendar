@@ -5,7 +5,11 @@ import fs from "fs";
 import { getEventDate } from "./date-logic.mjs";
 
 function formatDate(date) {
-  return date.toISOString().slice(0, 10).replace(/-/g, "");
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}${month}${day}`;
 }
 
 function formatTimestamp(date) {
@@ -18,7 +22,7 @@ PRODID:-//Days Calendar//EN
 CALSCALE:GREGORIAN
 `;
 
-for (const event of days) {
+for (const event of daysData) {
   for (let year = 2020; year <= 2030; year++) {
     const eventDate = getEventDate(event, year);
 

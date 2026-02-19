@@ -1,4 +1,5 @@
 import daysData from "./days.json" with { type: "json" };
+import { getEventDate } from "./date-logic.mjs";
 
 const state = {
   year: 0,
@@ -192,34 +193,14 @@ export function findOccurrenceIndex(occurrence) {
   return occurrenceMap[occurrence];
 }
 
-export function findMonthNumberAndDateNumber(
-  year,
-  { monthName, dayName, occurrence },
-) {
-  const monthNumber = convertMonthNameToNumber(monthName);
-  const occurrenceIndex = findOccurrenceIndex(occurrence);
-
-  // replace the logic by a new counting method
-
-  const objectOfWeekdayArrays = createObjectOfWeekdayArrays(year, monthNumber);
-
-  const weekdayArray = objectOfWeekdayArrays[dayName];
-
-  const exactDateNumberOfSpecialDay =
-    weekdayArray[occurrenceIndex] ||
-    weekdayArray[weekdayArray.length + occurrenceIndex];
-
-  return { monthNumber, exactDateNumberOfSpecialDay };
-}
-
 function addSpecialDaysOnCalendar(dateCellsArray) {
   const specialDaysOfTheMonthArray = filterSpecialDaysByMonthName(state.month);
 
   specialDaysOfTheMonthArray.forEach((specialDay) => {
-    const { exactDateNumberOfSpecialDay } = findMonthNumberAndDateNumber(
-      state.year,
+    const exactDateNumberOfSpecialDay = getEventDate(
       specialDay,
-    );
+      state.year,
+    ).getDate();
 
     const targetDateCell = dateCellsArray[exactDateNumberOfSpecialDay - 1];
     attachEvent(targetDateCell, specialDay);

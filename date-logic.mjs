@@ -31,34 +31,44 @@ const occurrenceMap = {
   last: -1,
 };
 
-export function getEventDate(event, year) {
-  const month = monthMap[event.monthName];
-  const weekday = dayNumberMap[event.dayName];
-  const occurrence = occurrenceMap[event.occurrence];
+export function getEventDate({ monthName, dayName, occurrence }, yearNumber) {
+  const monthNumber = monthMap[monthName];
+  const weekdayIndex = dayNumberMap[dayName];
+  const occurrenceNumber = occurrenceMap[occurrence];
 
-  return getNthWeekdayOfMonth(year, month, weekday, occurrence);
+  return getDateObjectOfTheEvent(
+    yearNumber,
+    monthNumber,
+    weekdayIndex,
+    occurrenceNumber,
+  );
 }
 
-function getNthWeekdayOfMonth(year, month, weekday, occurrence) {
-  const date = new Date(year, month, 1);
+function getDateObjectOfTheEvent(
+  yearNumber,
+  monthNumber,
+  weekdayIndex,
+  occurrenceNumber,
+) {
+  const date = new Date(yearNumber, monthNumber, 1);
   let count = 0;
 
-  if (occurrence > 0) {
-    while (date.getMonth() === month) {
-      if (date.getDay() === weekday) {
+  if (occurrenceNumber > 0) {
+    while (date.getMonth() === monthNumber) {
+      if (date.getDay() === weekdayIndex) {
         count++;
-        if (count === occurrence) {
+        if (count === occurrenceNumber) {
           return new Date(date);
         }
       }
       date.setDate(date.getDate() + 1);
     }
   } else {
-    date.setMonth(month + 1);
+    date.setMonth(monthNumber + 1);
     date.setDate(0);
 
-    while (date.getMonth() === month) {
-      if (date.getDay() === weekday) {
+    while (date.getMonth() === monthNumber) {
+      if (date.getDay() === weekdayIndex) {
         return new Date(date);
       }
       date.setDate(date.getDate() - 1);

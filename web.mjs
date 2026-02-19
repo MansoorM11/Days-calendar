@@ -8,11 +8,13 @@ const state = {
 function createCalendarHeaders() {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const calendarHeader = document.getElementById("calendar-header");
-  weekdays.forEach((weekday, index) => {
+
+  calendarHeader.innerHTML = "";
+
+  weekdays.forEach((weekday) => {
     const dayLiElement = document.createElement("li");
     dayLiElement.className = "weekdays";
     dayLiElement.textContent = weekday;
-    dayLiElement.value = index;
     dayLiElement.name = weekday;
     dayLiElement.ariaLabel = weekday;
     calendarHeader.append(dayLiElement);
@@ -196,6 +198,8 @@ export function findMonthNumberAndDateNumber(
 ) {
   const monthNumber = convertMonthNameToNumber(monthName);
   const occurrenceIndex = findOccurrenceIndex(occurrence);
+
+  // replace the logic by a new counting method
 
   const objectOfWeekdayArrays = createObjectOfWeekdayArrays(year, monthNumber);
 

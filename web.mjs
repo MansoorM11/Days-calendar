@@ -1,5 +1,5 @@
 import daysData from "./days.json" with { type: "json" };
-import { getEventDate } from "./date-logic.mjs";
+import { getEventDate, monthMap } from "./date-logic.mjs";
 
 const state = {
   year: 0,
@@ -111,41 +111,6 @@ function createDateCell(dateNumber) {
   return dateCell;
 }
 
-export function createObjectOfWeekdayArrays(targetYear, targetMonth) {
-  const firstDateObject = new Date(targetYear, targetMonth, 1);
-  const lastDateObject = new Date(targetYear, targetMonth + 1, 0);
-  const firstDateNumber = firstDateObject.getDate();
-  const lastDateNumber = lastDateObject.getDate();
-
-  const objectOfWeekdayArrays = {};
-
-  for (
-    let dateNumber = firstDateNumber;
-    dateNumber <= lastDateNumber;
-    dateNumber++
-  ) {
-    const weekdayIndex = new Date(targetYear, targetMonth, dateNumber).getDay();
-    const weekdaysArray = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-
-    const weekdayKey = weekdaysArray[weekdayIndex];
-    if (objectOfWeekdayArrays[weekdayKey]) {
-      objectOfWeekdayArrays[weekdayKey].push(dateNumber);
-    } else {
-      objectOfWeekdayArrays[weekdayKey] = [dateNumber];
-    }
-  }
-
-  return objectOfWeekdayArrays;
-}
-
 function createDatesOfMonth(firstDateObject, lastDateObject) {
   const dateCellsArray = [];
   const firstDateNumber = firstDateObject.getDate();
@@ -163,9 +128,7 @@ function createDatesOfMonth(firstDateObject, lastDateObject) {
 }
 
 function filterSpecialDaysByMonthName(monthNumber) {
-  return daysData.filter(
-    ({ monthName }) => convertMonthNameToNumber(monthName) == monthNumber,
-  );
+  return daysData.filter(({ monthName }) => monthMap[monthName] == monthNumber);
 }
 
 function attachEvent(targetDateCell, { name }) {
@@ -177,24 +140,10 @@ function attachEvent(targetDateCell, { name }) {
   }
 }
 
-export function convertMonthNameToNumber(monthName) {
-  return new Date(`${monthName} 1`).getMonth();
-}
-
-export function findOccurrenceIndex(occurrence) {
-  const occurrenceMap = {
-    first: 0,
-    second: 1,
-    third: 2,
-    fourth: 3,
-    last: -1,
-  };
-
-  return occurrenceMap[occurrence];
-}
-
 function addSpecialDaysOnCalendar(dateCellsArray) {
   const specialDaysOfTheMonthArray = filterSpecialDaysByMonthName(state.month);
+
+  if (specialDaysOfTheMonthArray.length === 0) return;
 
   specialDaysOfTheMonthArray.forEach((specialDay) => {
     const exactDateNumberOfSpecialDay = getEventDate(
@@ -264,8 +213,11 @@ function addListeners() {
 
   const yearInput = document.getElementById("year-input");
   yearInput.addEventListener("input", (e) => {
-    setYear(Number(e.target.value));
-    createMonthCalendar();
+    const yearInt = parseInt(e.target.value);
+    if (!isNaN(yearInt)) {
+      setYear(yearInt);
+      createMonthCalendar();
+    }
   });
 
   const previousButton = document.getElementById("go-previous-button");

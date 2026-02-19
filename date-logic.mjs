@@ -1,4 +1,4 @@
-const monthMap = {
+export const monthMap = {
   January: 0,
   February: 1,
   March: 2,

@@ -1,7 +1,7 @@
 import daysData from "./days.json" with { type: "json" };
 
 import fs from "fs";
-import { getEventDate } from "./date-logic.mjs";
+import { getEventDate } from "./common.mjs";
 
 function formatDate(date) {
   const year = date.getFullYear();

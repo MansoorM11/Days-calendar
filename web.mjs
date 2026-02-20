@@ -1,5 +1,5 @@
 import daysData from "./days.json" with { type: "json" };
-import { getEventDate, monthMap } from "./date-logic.mjs";
+import { getEventDate, monthMap } from "./common.mjs";
 
 const state = {
   year: 0,
@@ -68,10 +68,13 @@ function getCurrentDate() {
   yearInput.value = yearNumber;
 }
 
-function getFirstAndLastDateObjectAndIndex() {
-  const firstDateObject = new Date(state.year, state.month, 1);
+export function getFirstAndLastDateObjectAndIndex(
+  targetYearNumber,
+  targetMonthNumber,
+) {
+  const firstDateObject = new Date(targetYearNumber, targetMonthNumber, 1);
   const weekdayIndexOfFirstDate = firstDateObject.getDay();
-  const lastDateObject = new Date(state.year, state.month + 1, 0);
+  const lastDateObject = new Date(targetYearNumber, targetMonthNumber + 1, 0);
   const weekdayIndexOfLastDate = lastDateObject.getDay();
 
   return {
@@ -141,18 +144,20 @@ function attachEvent(targetDateCell, { name }) {
 }
 
 function addSpecialDaysOnCalendar(dateCellsArray) {
-  const specialDaysOfTheMonthArray = filterSpecialDaysByMonthName(state.month);
+  const specialDaysOfTheMonthObjectsArray = filterSpecialDaysByMonthName(
+    state.month,
+  );
 
-  if (specialDaysOfTheMonthArray.length === 0) return;
+  if (specialDaysOfTheMonthObjectsArray.length === 0) return;
 
-  specialDaysOfTheMonthArray.forEach((specialDay) => {
+  specialDaysOfTheMonthObjectsArray.forEach((specialDayObject) => {
     const exactDateNumberOfSpecialDay = getEventDate(
-      specialDay,
+      specialDayObject,
       state.year,
     ).getDate();
 
     const targetDateCell = dateCellsArray[exactDateNumberOfSpecialDay - 1];
-    attachEvent(targetDateCell, specialDay);
+    attachEvent(targetDateCell, specialDayObject);
   });
 }
 
@@ -166,7 +171,7 @@ function createMonthCalendar() {
     weekdayIndexOfFirstDate,
     lastDateObject,
     weekdayIndexOfLastDate,
-  } = getFirstAndLastDateObjectAndIndex();
+  } = getFirstAndLastDateObjectAndIndex(state.year, state.month);
 
   const sundayIndex = 0;
   const saturdayIndex = 6;
@@ -231,10 +236,12 @@ function addListeners() {
   });
 }
 
-window.onload = function () {
-  createCalendarHeaders();
-  populateMonthSelect();
-  getCurrentDate();
-  createMonthCalendar();
-  addListeners();
-};
+if (typeof window !== "undefined") {
+  window.onload = function () {
+    createCalendarHeaders();
+    populateMonthSelect();
+    getCurrentDate();
+    createMonthCalendar();
+    addListeners();
+  };
+}

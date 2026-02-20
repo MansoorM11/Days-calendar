@@ -1,8 +1,7 @@
-import { getGreeting } from "./common.mjs";
 import daysData from "./days.json" with { type: "json" };
 
 import fs from "fs";
-import { getEventDate } from "./date-logic.mjs";
+import { getEventDate } from "./common.mjs";
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -24,13 +23,13 @@ CALSCALE:GREGORIAN
 
 for (const event of daysData) {
   for (let year = 2020; year <= 2030; year++) {
-    const eventDate = getEventDate(event, year);
+    const eventDateObject = getEventDate(event, year);
 
-    const startDate = formatDate(eventDate);
+    const startDateString = formatDate(eventDateObject);
 
-    const nextDay = new Date(eventDate);
-    nextDay.setDate(nextDay.getDate() + 1);
-    const endDate = formatDate(nextDay);
+    const nextDayObject = new Date(eventDateObject);
+    nextDayObject.setDate(nextDayObject.getDate() + 1);
+    const endDateString = formatDate(nextDayObject);
 
     const dtstamp = formatTimestamp(new Date());
 
@@ -40,8 +39,8 @@ for (const event of daysData) {
 BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${dtstamp}
-DTSTART;VALUE=DATE:${startDate}
-DTEND;VALUE=DATE:${endDate}
+DTSTART;VALUE=DATE:${startDateString}
+DTEND;VALUE=DATE:${endDateString}
 SUMMARY:${event.name}
 DESCRIPTION:${event.descriptionURL}
 END:VEVENT

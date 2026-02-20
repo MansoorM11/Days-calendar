@@ -1,9 +1,46 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <script type="module" src="common.mjs"></script>
-        <script type="module" src="web.mjs"></script>
-    </head>
-    <body>
-    </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Days-calendar</title>
+    <link href="./styles.css" rel="stylesheet" />
+    <script type="module" src="common.mjs"></script>
+    <script type="module" src="web.mjs"></script>
+  </head>
+  <body>
+    <header>
+      <h1 id="page-header">Days-Calendar</h1>
+    </header>
+    <nav id="nav-bar">
+      <div id="date-select-field">
+        <select id="month-select" aria-label="month select"></select>
+        <input id="year-input" type="number" aria-label="year input" value="" />
+      </div>
+      <div id="navigate-button-field">
+        <button
+          id="go-previous-button"
+          class="navigate-button"
+          aria-label="previous month"
+        >
+          <p class="navigate-icon" aria-label="left triangle">◀</p>
+        </button>
+
+        <button
+          id="go-next-button"
+          class="navigate-button"
+          aria-label="next month"
+        >
+          <p class="navigate-icon" aria-label="right triangle">▶</p>
+        </button>
+      </div>
+    </nav>
+    <main>
+      <section id="calendar-section">
+        <ul id="calendar-header"></ul>
+        <div id="calendar-body"></div>
+      </section>
+    </main>
+    <footer>Created by Brian & Mansoor</footer>
+  </body>
 </html>

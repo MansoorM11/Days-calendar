@@ -10,6 +10,8 @@ We have supplied a JSON file ([`days.json`](./days.json)) which contains descrip
 
 The goal of this project is to present this data usefully to users.
 
+## Live demo: https://day-calendar-project.netlify.app/
+
 ## Requirements
 
 This may be an individual or a team project - your class leaders will tell you which you are doing. If it is a team project, they will also tell you how the groups will work.

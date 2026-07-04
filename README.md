@@ -54,28 +54,26 @@ The most rewarding part of this project was navigating technical disagreements. 
 
 ---
 
+
 ## ⚙️ Local Setup & Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/MansoorM11/Days-calendar.git](https://github.com/MansoorM11/Days-calendar.git)
-
+   git clone https://github.com/MansoorM11/Days-calendar.git
+   ```
 2. Navigate into the project directory:
-
-  ```Bash
-    cd Days-calendar
-
+   ```Bash
+   cd Days-calendar
+   ```
 3. Install dependencies:
-
-  ```Bash
-    npm install
-
+   ```Bash
+   npm install
+   ```
 4. Run the automated unit test suite:
-
-  ```Bash
-    npm test
-
+   ```Bash
+   npm test
+   ```
 5. Generate the local iCal file:
-
-  ```Bash
-    node index.js
+   ```Bash
+   node generate-ical.mjs
+   ```
